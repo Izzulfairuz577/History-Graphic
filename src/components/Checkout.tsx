@@ -39,7 +39,7 @@ const Checkout: React.FC<CheckoutProps> = ({ isOpen, onClose }) => {
     const message = `Halo! Saya ingin membeli produk dari History Graphic:
 
 *Detail Pesanan:*
-${state.items.map(item => `• ${item.product.title} (${item.quantity}x) - ${formatPrice(item.product.price * item.quantity)}`).join('\n')}
+${state.items.map(item => `• ${item.product.title} (${item.quantity}x) - ${formatPrice(item.product.price_cents * item.quantity)}`).join('\n')}
 
 *Total: ${formatPrice(state.total)}*
 
@@ -62,6 +62,30 @@ Terima kasih!`;
     clearCart();
     onClose();
     setStep('form');
+  };
+
+  const handlePay = async () => {
+    const cartItems = state.items.map(item => ({
+      product_name: item.product.title,
+      product_price: item.product.price_cents,
+      product_quantity: item.quantity
+    }));
+    const payload = {
+      items: cartItems,
+      total_price: state.total
+    };
+    try {
+      await fetch("https://n8n-tzciewebscpo.pempek.sumopod.my.id/webhook-test/pyment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      // You can add further logic here, e.g. show success message or redirect
+    } catch (error) {
+      // Handle error (show error message, etc.)
+    }
   };
 
   if (!isOpen) return null;
@@ -101,7 +125,7 @@ Terima kasih!`;
                   {state.items.map((item) => (
                     <div key={item.product.id} className="flex justify-between text-sm">
                       <span>{item.product.title} ({item.quantity}x)</span>
-                      <span>{formatPrice(item.product.price * item.quantity)}</span>
+                      <span>{formatPrice(item.product.price_cents * item.quantity)}</span>
                     </div>
                   ))}
                   <div className="border-t border-gray-200 pt-2 flex justify-between font-semibold">
@@ -114,7 +138,6 @@ Terima kasih!`;
               {/* Buyer Form */}
               <div className="space-y-4">
                 <h3 className="font-semibold text-gray-900">Data Pembeli</h3>
-                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Nama Lengkap *
@@ -128,7 +151,6 @@ Terima kasih!`;
                     placeholder="Masukkan nama lengkap"
                   />
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Email *
@@ -142,7 +164,6 @@ Terima kasih!`;
                     placeholder="example@email.com"
                   />
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Nomor WhatsApp *
@@ -176,22 +197,6 @@ Terima kasih!`;
                     <div>
                       <div className="font-medium">WhatsApp (Recommended)</div>
                       <div className="text-sm text-gray-600">Checkout langsung via WhatsApp</div>
-                    </div>
-                  </label>
-
-                  <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="bank"
-                      checked={form.paymentMethod === 'bank'}
-                      onChange={(e) => setForm({ ...form, paymentMethod: e.target.value as any })}
-                      className="mr-3"
-                    />
-                    <CreditCard className="h-5 w-5 mr-3 text-blue-600" />
-                    <div>
-                      <div className="font-medium">Transfer Bank</div>
-                      <div className="text-sm text-gray-600">BCA, BRI, Mandiri</div>
                     </div>
                   </label>
 
@@ -257,7 +262,7 @@ Terima kasih!`;
               </div>
 
               <button
-                onClick={handlePaymentComplete}
+                onClick={form.paymentMethod === 'ewallet' ? handlePay : handlePaymentComplete}
                 className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-medium text-lg hover:bg-gray-800 transition-colors duration-200"
               >
                 Selesaikan Pembayaran

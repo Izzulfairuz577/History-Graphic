@@ -46,7 +46,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, onCheckout }) => {
                 <div key={item.product.id} className="bg-gray-50 rounded-lg p-4">
                   <div className="flex gap-3">
                     <img
-                      src={item.product.image}
+                      src={item.product.image_url}
                       alt={item.product.title}
                       className="w-16 h-16 object-cover rounded-md"
                     />
@@ -55,7 +55,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, onCheckout }) => {
                         {item.product.title}
                       </h3>
                       <p className="text-sm text-gray-600 mb-2">
-                        {formatPrice(item.product.price)}
+                        {formatPrice(item.product.price_cents)}
                       </p>
                       
                       <div className="flex items-center justify-between">

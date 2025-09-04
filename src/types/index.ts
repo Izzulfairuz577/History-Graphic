@@ -2,15 +2,9 @@ export interface Product {
   id: string;
   title: string;
   description: string;
-  price: number;
-  category: 'poster' | 'template' | 'illustration';
-  image: string;
-  format: string;
-  size: string;
-  resolution: string;
-  license: string;
-  featured?: boolean;
-  popular?: boolean;
+  price_cents: number;
+  image_url: string;
+  category: string;
 }
 
 export interface CartItem {

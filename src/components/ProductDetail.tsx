@@ -43,7 +43,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onClose }) => {
             <div className="space-y-4">
               <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
                 <img
-                  src={product.image}
+                  src={product.image_url}
                   alt={product.title}
                   className="w-full h-full object-cover"
                 />
@@ -101,7 +101,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onClose }) => {
               <div className="border-t border-gray-200 pt-6">
                 <div className="flex items-center justify-between mb-6">
                   <span className="text-3xl font-bold text-gray-900">
-                    {formatPrice(product.price)}
+                    {formatPrice(product.price_cents)}
                   </span>
                   <div className="flex items-center gap-2 text-sm text-gray-500">
                     <Download className="h-4 w-4" />

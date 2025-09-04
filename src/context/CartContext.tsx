@@ -25,14 +25,14 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         );
         return {
           items: updatedItems,
-          total: updatedItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
+          total: updatedItems.reduce((sum, item) => sum + (item.product.price_cents * item.quantity), 0)
         };
       }
       
       const newItems = [...state.items, { product: action.product, quantity: 1 }];
       return {
         items: newItems,
-        total: newItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
+        total: newItems.reduce((sum, item) => sum + (item.product.price_cents * item.quantity), 0)
       };
     }
     
@@ -40,7 +40,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       const filteredItems = state.items.filter(item => item.product.id !== action.productId);
       return {
         items: filteredItems,
-        total: filteredItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
+        total: filteredItems.reduce((sum, item) => sum + (item.product.price_cents * item.quantity), 0)
       };
     }
     
@@ -53,7 +53,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       
       return {
         items: updatedItems,
-        total: updatedItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
+        total: updatedItems.reduce((sum, item) => sum + (item.product.price_cents * item.quantity), 0)
       };
     }
     

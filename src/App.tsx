@@ -11,7 +11,7 @@ import Checkout from './components/Checkout';
 import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import { products } from './data/products';
+import { supabase } from './utils/supabaseClient';
 import { Product } from './types';
 
 function App() {
@@ -19,6 +19,35 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, title, description, price_cents, category, image_url, format, size, resolution, license');
+      if (error) {
+        console.error('Error fetching products:', error.message);
+        setProducts([]);
+      } else {
+        setProducts(
+          data.map((item: any) => ({
+            id: item.id || "",
+            title: item.title || "",
+            description: item.description || "",
+            price_cents: item.price_cents || 0,
+            image_url: item.image_url || "",
+            category: item.category || "",
+            format: item.format || "",
+            size: item.size || "",
+            resolution: item.resolution || "",
+            license: item.license || ""
+          }))
+        );
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Handle URL path changes for navigation
   useEffect(() => {

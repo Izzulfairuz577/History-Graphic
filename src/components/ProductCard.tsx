@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => 
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 group">
       <div className="relative overflow-hidden">
         <img
-          src={product.image}
+          src={product.image_url}
           alt={product.title}
           className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
         />
@@ -36,18 +36,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => 
             Lihat Detail
           </button>
         </div>
-        
-        {product.featured && (
-          <div className="absolute top-4 left-4 bg-gray-900 text-white px-2 py-1 rounded-md text-xs font-medium">
-            Unggulan
-          </div>
-        )}
-        
-        {product.popular && (
-          <div className="absolute top-4 right-4 bg-gray-600 text-white px-2 py-1 rounded-md text-xs font-medium">
-            Populer
-          </div>
-        )}
       </div>
       
       <div className="p-6">
@@ -59,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => 
         </p>
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-gray-900">
-            {formatPrice(product.price)}
+            {formatPrice(product.price_cents)}
           </span>
           <button
             onClick={() => addToCart(product)}

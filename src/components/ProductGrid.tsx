@@ -20,9 +20,9 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, category, onViewDet
       case 'popular':
         return filtered.sort((a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0));
       case 'price-low':
-        return filtered.sort((a, b) => a.price - b.price);
+        return filtered.sort((a, b) => a.price_cents - b.price_cents);
       case 'price-high':
-        return filtered.sort((a, b) => b.price - a.price);
+        return filtered.sort((a, b) => b.price_cents - a.price_cents);
       default:
         return filtered;
     }
